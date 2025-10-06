@@ -1,75 +1,23 @@
-# Nuxt Minimal Starter
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+![Logo](https://drive.google.com/thumbnail?id=14dZ_TkRKytCi2lxPIencG4EBXN5xrDsN)
 
-## Setup
 
-Make sure to install dependencies:
+# Yoga countdown
 
-```bash
-# npm
-npm install
+Simple webapp hosted on github pages intended for the simple usecase to demonstrate time untill next yoga session
 
-# pnpm
-pnpm install
+## Tech Stack
 
-# yarn
-yarn install
+**Client:** Vue, TailwindCSS, Typescript, Javascript, GOlang
 
-# bun
-bun install
-```
+**Server:** Node, Firebase, AWS
 
-## Development Server
 
-Start the development server on `http://localhost:3000`:
+## Development
+
+Frontend development
 
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+    

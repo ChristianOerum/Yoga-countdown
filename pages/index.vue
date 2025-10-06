@@ -1,15 +1,21 @@
 <template>
     <div class="min-h-screen flex flex-col items-center justify-center bg-[#F4F5F5] text-[#2F3241]">
       <!-- Header -->
-      <h1 class="text-[68px] font-bold tracking-tight mb-8">Næste Yoga starter om...</h1>
+      <h1 v-if="!finished" class="text-[68px] font-bold tracking-tight mb-8">Næste Yoga starter om...</h1>
+
+      <!-- Status -->
+      <h1 v-else class="text-[68px] font-bold tracking-tight mb-8 text-emerald-600 slow-pulse">Yoga er igang</h1>
   
       <!-- Countdown Display -->
-      <div class="flex flex-col items-center gap-4">
+      <div class="flex flex-col items-center gap-4 relative">
+
+        <div v-if="finished" class="bg-[#F4F5F5] w-full h-full opacity-50 absolute z-30"></div>
+
         <div class="flex items-end gap-5">
           <template v-for="group in groups" :key="group.label">
             <div class="flex items-end gap-2">
               <!-- Tens wheel -->
-              <div class="relative overflow-hidden rounded-2xl bg-white shadow ring-1 ring-gray-200 h-[72px] w-[64px]" style="box-shadow: 0px 0px 6px rgba(0, 0, 0, .06);">
+              <div class="relative overflow-hidden rounded-2xl bg-white shadow ring-1 ring-gray-200 h-[92px] w-[84px]" style="box-shadow: 0px 0px 6px rgba(0, 0, 0, .06);">
                 <div
                   class="will-change-transform transform-gpu mt-1"
                   :style="wheelStyle(group.start)"
@@ -17,7 +23,7 @@
                   <div
                     v-for="n in 10"
                     :key="`tens-${group.label}-${n-1}`"
-                    class="h-[72px] flex items-center justify-center text-[48px] font-bold leading-none"
+                    class="h-[92px] flex items-center justify-center text-[48px] font-bold leading-none"
                   >
                     {{ n - 1 }}
                   </div>
@@ -25,7 +31,7 @@
               </div>
   
               <!-- Ones wheel -->
-              <div class="relative overflow-hidden rounded-2xl bg-white shadow ring-1 ring-gray-200 h-[72px] w-[64px]" style="box-shadow: 0px 0px 6px rgba(0, 0, 0, .06);">
+              <div class="relative overflow-hidden rounded-2xl bg-white shadow ring-1 ring-gray-200 h-[92px] w-[84px]" style="box-shadow: 0px 0px 6px rgba(0, 0, 0, .06);">
                 <div
                   class="will-change-transform transform-gpu mt-1"
                   :style="wheelStyle(group.start + 1)"
@@ -33,27 +39,19 @@
                   <div
                     v-for="m in 10"
                     :key="`ones-${group.label}-${m-1}`"
-                    class="h-[72px] flex items-center justify-center text-[48px] font-bold leading-none"
+                    class="h-[92px] flex items-center justify-center text-[48px] font-bold leading-none"
                   >
                     {{ m - 1 }}
                   </div>
                 </div>
               </div>
   
-              <span class="pb-1.5 text-sm font-medium text-gray-500 select-none">
+              <span class="pb-1.5 text-[20px] font-semibold text-gray-500 select-none">
                 {{ group.label }}
               </span>
             </div>
           </template>
-        </div>
-  
-        <!-- Status -->
-        <div
-          v-if="finished"
-          class="mt-4 text-2xl font-semibold text-emerald-600 animate-pulse"
-        >
-          YOGA IN PROGRESS
-        </div>
+        </div>        
       </div>
       
       <div class="absolute bottom-8 flex flex-col items-center text-[16px]">
@@ -67,21 +65,21 @@
             type="number"
             min="0"
             placeholder="Indtast sekundter"
-            class="flex-1 rounded-lg bg-white p-2 pr-4 pl-4 text-[16px] font-semibold focus:outline-none pb-1"
+            class="flex-1 rounded-lg bg-white p-3 pr-4 pl-4 text-[16px] font-semibold focus:outline-none pb-[8px]"
             style="box-shadow: 0px 0px 6px rgba(0, 0, 0, .06);"
             />
             <button
             type="submit"
-            class="rounded-lg p-2 pr-4 pl-4 text-[18px] font-semibold bg-[#0079ff] text-white active:scale-[0.99] transition pb-1"
+            class="rounded-lg p-3 pr-4 pl-4 text-[18px] font-semibold bg-[#0079ff] text-white active:scale-[0.99] transition pb-[6px]"
             >
             Start
             </button>
             <button
             type="button"
             @click="reset"
-            class="rounded-lg p-2 pr-4 pl-4 text-[18px] font-semibold bg-[#E4E5E7] text-[#A8ABB0] active:scale-[0.99] transition pb-1"
+            class="rounded-lg p-3 pr-4 pl-4 text-[18px] font-semibold bg-[#E4E5E7] text-[#A8ABB0] active:scale-[0.99] transition pb-[6px]"
             >
-            Reset
+            Nulstil
             </button>
         </form>
     </div>
@@ -95,7 +93,7 @@
   /* -------------------------------------------------
      Fixed pixel size for perfect alignment everywhere
   -------------------------------------------------- */
-  const ITEM_HEIGHT_PX = 72 // matches h-[72px] on container & rows
+  const ITEM_HEIGHT_PX = 92 // matches h-[72px] on container & rows
   
   /* ---------------------------
      State & Countdown Logic
@@ -240,3 +238,17 @@
   }
   </script>
   
+  <style>
+    @keyframes slow-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+    }
+
+    .slow-pulse {
+    animation: slow-pulse 3s ease-in-out infinite; /* slower than Tailwind’s default (~1.5s) */
+    }
+   </style>

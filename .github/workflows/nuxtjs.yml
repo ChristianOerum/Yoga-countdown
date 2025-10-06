@@ -1,10 +1,16 @@
-# https://github.com/actions/deploy-pages#usage
+# Deploy Nuxt (static) to GitHub Pages — project page compatible
 name: Deploy to GitHub Pages
+
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,26 +20,36 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      # Pick your own package manager and build script
-      - run: npm install
-      - run: npx nuxt build --preset github_pages
+
+      # Prefer clean, reproducible installs
+      - run: npm ci
+
+      # IMPORTANT: set base URL for project pages (replace <repo>)
+      # If you're using a custom domain or a user page, omit the env var.
+      - run: NUXT_APP_BASE_URL=/<repo>/ npx nuxt build --preset github_pages
+
+      # Ensure Jekyll is bypassed so _nuxt/ is served
+      - run: touch .output/public/.nojekyll
+
+      # (Optional) keep a custom domain working if you have one
+      - name: Preserve CNAME if present
+        run: |
+          if [ -f CNAME ]; then cp CNAME .output/public/CNAME; fi
+          if [ -f public/CNAME ]; then cp public/CNAME .output/public/CNAME; fi
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./.output/public
-  # Deployment job
+
   deploy:
-    # Add a dependency to the build job
     needs: build
-    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:
-      pages: write      # to deploy to Pages
-      id-token: write   # to verify the deployment originates from an appropriate source
-    # Deploy to the github_pages environment
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    # Specify runner + deployment step
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages

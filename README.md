@@ -12,6 +12,13 @@ Simple webapp hosted on github pages intended for the simple usecase to demonstr
 
 **Server:** Node, Firebase, AWS
 
+## Build
+
+Frontend development
+
+```bash
+npx nuxi generate
+```
 
 ## Development
 
